@@ -343,18 +343,53 @@ function renderFinance(){
   setText("accBalance",money(balance));setText("accPending",pending);
 }
 function renderAll(){
-  renderPeopleTable("mainTable",students,"functional");
-  renderPeopleTable("personalTable",personalClients,"personal");
-  const f=totals(students,selectedMonth),p=totals(personalClients,personalMonth);
-  setText("studentCount",students.filter(s=>s.name.trim()).length);
-  setText("monthReceived",money(f.received));setText("monthRent",money(f.rent));setText("monthBalance",money(f.balance));
-  setText("personalCount",personalClients.filter(s=>s.name.trim()).length);
-  setText("personalMonthReceived",money(p.received));setText("personalMonthRent",money(p.rent));setText("personalMonthBalance",money(p.balance));
-  const a=renderSummary("summaryTable",students);
-  setText("sumReceived",money(a.received));setText("sumRent",money(a.rent));setText("sumBalance",money(a.balance));setText("sumPending",a.pendingCount);
-  renderSummary("personalSummaryTable",personalClients);
+  // Ordenar alfabeticamente, sem distinguir maiúsculas, minúsculas ou acentos.
+  // Os cadastros sem nome ficam no final da lista.
+  const ordenarAlfabeticamente = (lista) => {
+    lista.sort((a, b) => {
+      const nomeA = (a.name || "").trim();
+      const nomeB = (b.name || "").trim();
+
+      if (!nomeA && nomeB) return 1;
+      if (nomeA && !nomeB) return -1;
+      if (!nomeA && !nomeB) return 0;
+
+      return nomeA.localeCompare(nomeB, "pt-BR", {
+        sensitivity: "base"
+      });
+    });
+  };
+
+  ordenarAlfabeticamente(students);
+  ordenarAlfabeticamente(personalClients);
+
+  renderPeopleTable("mainTable", students, "functional");
+  renderPeopleTable("personalTable", personalClients, "personal");
+
+  const f = totals(students, selectedMonth);
+  const p = totals(personalClients, personalMonth);
+
+  setText("studentCount", students.filter(s => s.name.trim()).length);
+  setText("monthReceived", money(f.received));
+  setText("monthRent", money(f.rent));
+  setText("monthBalance", money(f.balance));
+
+  setText("personalCount", personalClients.filter(s => s.name.trim()).length);
+  setText("personalMonthReceived", money(p.received));
+  setText("personalMonthRent", money(p.rent));
+  setText("personalMonthBalance", money(p.balance));
+
+  const a = renderSummary("summaryTable", students);
+
+  setText("sumReceived", money(a.received));
+  setText("sumRent", money(a.rent));
+  setText("sumBalance", money(a.balance));
+  setText("sumPending", a.pendingCount);
+
+  renderSummary("personalSummaryTable", personalClients);
   renderFinance();
 }
+
 function setupSelect(id,month){
   $(id).innerHTML=MONTHS.map(m=>`<option value="${m[0]}">${m[1]}</option>`).join("");
   $(id).value=month;
