@@ -254,13 +254,27 @@ function loadSet(key){
   try{
     const d=JSON.parse(localStorage.getItem(key)||"null");
     if(d&&Array.isArray(d.students)){
+      const people=normalizePeople(d.students);
+      const limit=key===FUNCTIONAL_KEY?100:50;
+
+      while(people.length<limit){
+        people.push(blankPerson(""));
+      }
+
       return{
-        people:normalizePeople(d.students),
+        people,
         month:MONTHS.some(m=>m[0]===d.selectedMonth)?d.selectedMonth:MONTHS[0][0]
       };
     }
   }catch(e){}
-  return{people:Array.from({length:150},()=>blankPerson("")),month:MONTHS[0][0]};
+
+  const limit=key===FUNCTIONAL_KEY?100:50;
+
+  return{
+    people:Array.from({length:limit},()=>blankPerson("")),
+    month:MONTHS[0][0]
+  };
+
 }
 function loadData(){
   const f=loadSet(FUNCTIONAL_KEY),p=loadSet(PERSONAL_KEY);
