@@ -1,63 +1,527 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#100d15">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100d15">
 <title>CBA Funcional FUT | Painel Administrativo</title>
 <style>
 :root{--bg:#100d15;--panel:#19151f;--purple:#7629a8;--pink:#d94bff;--line:#3a2d45;--text:#f8f4fc;--muted:#b6a9c2;--green:#54d69a;--red:#ff777e}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;font-size:14px}button,input,select{font:inherit}button{cursor:pointer}
-.header{padding:22px 24px;background:linear-gradient(120deg,#17111e,#281435);border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:16px}.logo{width:76px;height:76px;object-fit:contain;background:#08070a;border:1px solid var(--line);border-radius:12px}.brand h1{font-size:clamp(19px,3vw,27px);margin:0 0 7px;letter-spacing:1px}.brand p{margin:0;color:var(--muted);font-size:12px}.private{display:inline-block;margin-top:10px;padding:5px 9px;border:1px solid #8151a0;border-radius:4px;color:#e7b9ff;font-size:10px;font-weight:bold;letter-spacing:1px}
-.container{max-width:1800px;margin:auto;padding:20px}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-bottom:18px}.nav-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}.nav-tabs .tab{min-height:44px;font-weight:600}.actions-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px;background:#17121c;border:1px solid var(--line);border-radius:8px;margin-bottom:18px}.actions-toolbar .status{flex:1 1 100%;margin:0}.table-hint{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;background:#17121c;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line)}.photo-cell{min-width:60px;text-align:center}.photo-link{padding:4px 6px;border:1px solid #65417a;border-radius:5px;background:#24182e}.photo-thumb{width:34px;height:34px;margin:0 0 4px;display:block}.name-cell{min-width:190px;text-align:left}.tab,.btn{border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#211a2a;color:var(--text)}.tab.active,.btn.primary{background:var(--purple);border-color:var(--pink)}.btn:hover,.tab:hover{filter:brightness(1.2)}.btn.danger{color:#ffadb1;border-color:#7a353c}.btn.small{padding:5px 8px;font-size:11px}.status{color:var(--muted);font-size:12px;margin-left:auto}h2{font-size:18px;margin:0 0 8px}
-.metrics{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;margin-bottom:18px}.metric{background:var(--panel);border:1px solid var(--line);padding:15px;border-radius:7px}.metric span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;margin-bottom:10px}.metric strong{font-size:clamp(17px,2vw,24px);overflow-wrap:anywhere}.purple{color:#e1a4ff}.green{color:var(--green)}.yellow{color:#f6d77b}.red{color:var(--red)}
-.sheet{background:var(--panel);border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-bottom:20px}.sheet-title{padding:16px;background:#24182e;border-bottom:1px solid var(--line)}.sheet-title p{color:var(--muted);font-size:12px;margin:7px 0 0}.table-wrap{width:100%;overflow:auto;max-height:70vh}table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;white-space:nowrap}th,td{padding:9px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}th{background:#30213b;color:#f2e5ff;font-size:11px;position:sticky;top:0;z-index:2}th:first-child,td:first-child{position:sticky;left:0;z-index:1;background:#211a29}th:first-child{z-index:4;background:#30213b}th:nth-child(2),td:nth-child(2){position:sticky;left:60px;z-index:1;background:#211a29}th:nth-child(2){z-index:4;background:#30213b}th:nth-child(3),td:nth-child(3){position:sticky;left:104px;z-index:1;background:#211a29}th:nth-child(3){z-index:4;background:#30213b}td.photo-cell{min-width:60px;width:60px}th:nth-child(2),td:nth-child(2){min-width:44px;width:44px}th:nth-child(3),td:nth-child(3){min-width:190px}td.name,th.name{text-align:left;min-width:225px}td.money{min-width:140px}tfoot td{background:#30213b;font-weight:bold}tfoot tr td:first-child{background:#30213b}.cell-input{width:100%;min-width:68px;background:transparent;border:1px solid transparent;border-radius:3px;color:var(--text);padding:6px 4px;text-align:center;outline:none}.cell-input.name-input{text-align:left;min-width:140px}.editing .cell-input{border-color:#715182;background:#17111e}.cell-input:focus{border-color:var(--pink);background:#24152f}.money-cell{color:#d7c8e3}.money-cell.paid{color:var(--green)}.money-cell.pending{color:#f6d77b}.row-actions{min-width:78px}.summary-table td:first-child{text-align:left}.summary-table td{min-width:115px}.summary-table td:first-child{min-width:145px}.note{padding:14px;color:var(--muted);font-size:12px;line-height:1.6}.footer{color:var(--muted);text-align:center;font-size:11px;padding:24px}.hidden{display:none!important}.section{display:none}.section.active{display:block}.photo-link{display:inline-block;margin-right:7px;color:#e1a4ff;text-decoration:underline;font-size:11px}.photo-thumb{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:5px;border:1px solid var(--line);cursor:pointer}
-@media(max-width:760px){.header{padding:16px}.container{padding:12px}.logo{width:59px;height:59px}.brand{gap:11px}.brand p{line-height:1.5}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:12px}.toolbar{gap:7px}.nav-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.nav-tabs .tab{padding:10px 8px;font-size:12px;line-height:1.3}.actions-toolbar .btn{padding:9px 10px;font-size:12px}.status{width:100%;margin-left:0}th,td{padding:8px 7px}.name-cell{min-width:165px}.table-wrap{max-height:68vh;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}}
-dialog{background:#19151f;color:#f8f4fc;border:1px solid #3a2d45;border-radius:10px;max-width:92vw;width:420px}dialog::backdrop{background:#000a}.photo-preview{width:110px;height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block;margin:10px 0}
-</style></head><body>
-<header class="header"><div class="brand"><img class="logo" src="logo-cba.jpeg" alt="Logo CBA Funcional FUT" onerror="this.style.display='none'"><div><h1>CBA FUNCIONAL FUT</h1><p>CONTROLE DE MENSALIDADES E GESTÃO FINANCEIRA</p><span class="private">â PAINEL ADMINISTRATIVO PRIVADO</span></div></div></header>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.header{padding:22px 24px;background:linear-gradient(120deg,#17111e,#281435);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:16px}
+.logo{width:76px;height:76px;object-fit:contain;background:#08070a;border:1px solid var(--line);border-radius:12px}
+.brand h1{font-size:clamp(19px,3vw,27px);margin:0 0 7px;letter-spacing:1px}
+.brand p{margin:0;color:var(--muted);font-size:12px}
+.private{display:inline-block;margin-top:10px;padding:5px 9px;border:1px solid #8151a0;border-radius:4px;color:#e7b9ff;font-size:10px;font-weight:bold;letter-spacing:1px}
+.container{max-width:1800px;margin:auto;padding:20px}
+.nav-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.actions-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px;background:#17121c;border:1px solid var(--line);border-radius:8px;margin-bottom:18px}
+.tab,.btn{border:1px solid var(--line);border-radius:6px;padding:10px 14px;background:#211a2a;color:var(--text)}
+.tab.active,.btn.primary{background:var(--purple);border-color:var(--pink)}
+.btn.danger{color:#ffadb1;border-color:#7a353c}
+.hidden{display:none!important}
+.status{color:var(--muted);font-size:12px;flex:1 1 100%}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.metric{background:var(--panel);border:1px solid var(--line);padding:15px;border-radius:7px}
+.metric span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;margin-bottom:10px}
+.metric strong{font-size:clamp(17px,2vw,24px);overflow-wrap:anywhere}
+.purple{color:#e1a4ff}.green{color:var(--green)}.yellow{color:#f6d77b}.red{color:var(--red)}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-bottom:20px}
+.sheet-title{padding:16px;background:#24182e;border-bottom:1px solid var(--line)}
+.sheet-title p{color:var(--muted);font-size:12px;margin:7px 0 0;line-height:1.5}
+h2{font-size:18px;margin:0 0 8px}
+.table-hint{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;background:#17121c;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line)}
+.table-wrap{width:100%;overflow:auto;max-height:70vh}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;white-space:nowrap}
+th,td{padding:9px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+th{background:#30213b;color:#f2e5ff;font-size:11px;position:sticky;top:0;z-index:2}
+th:first-child,td:first-child{position:sticky;left:0;z-index:1;background:#211a29}
+th:first-child{z-index:4;background:#30213b}
+td.name,th.name{text-align:left;min-width:190px}
+td.money{min-width:140px}
+tfoot td{background:#30213b;font-weight:bold}
+.cell-input{width:100%;min-width:68px;background:transparent;border:1px solid transparent;border-radius:3px;color:var(--text);padding:6px 4px;text-align:center}
+.cell-input.name-input{text-align:left;min-width:140px}
+.editing .cell-input{border-color:#715182;background:#17111e}
+.money-cell{color:#d7c8e3}.money-cell.paid{color:var(--green)}.money-cell.pending{color:#f6d77b}
+.photo-cell{min-width:90px;text-align:center}
+.photo-link{display:inline-block;padding:4px 6px;border:1px solid #65417a;border-radius:5px;background:#24182e;color:#e1a4ff;text-decoration:underline;font-size:11px}
+.photo-thumb{width:32px;height:32px;border-radius:50%;object-fit:cover;vertical-align:middle;margin:0 4px 4px;border:1px solid var(--line);cursor:pointer}
+.note{padding:14px;color:var(--muted);font-size:12px;line-height:1.6}
+.footer{color:var(--muted);text-align:center;font-size:11px;padding:24px}
+.section{display:none}.section.active{display:block}
+dialog{background:#19151f;color:#f8f4fc;border:1px solid #3a2d45;border-radius:10px;max-width:92vw;width:420px}
+dialog::backdrop{background:#000a}
+.photo-preview{width:110px;height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block;margin:10px 0}
+@media(max-width:760px){
+.header{padding:16px}.container{padding:12px}.logo{width:59px;height:59px}.brand{gap:11px}
+.brand p{line-height:1.5}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+.metric{padding:12px}.nav-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.nav-tabs .tab{padding:10px 8px;font-size:12px;line-height:1.3}
+.actions-toolbar .btn{padding:9px 10px;font-size:12px}
+th,td{padding:8px 7px}.table-wrap{max-height:68vh;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="brand">
+    <img class="logo" src="logo-cba.jpeg" alt="Logo CBA Funcional FUT" onerror="this.style.display='none'">
+    <div>
+      <h1>CBA FUNCIONAL FUT</h1>
+      <p>CONTROLE DE MENSALIDADES E GESTÃO FINANCEIRA</p>
+      <span class="private">◆ PAINEL ADMINISTRATIVO PRIVADO</span>
+    </div>
+  </div>
+</header>
+
 <main class="container">
-<nav class="nav-tabs" aria-label="SeÃ§Ãµes do painel">
-<button type="button" class="tab active" data-tab="controle">Controle mensal Â· Funcional</button><button type="button" class="tab" data-tab="resumo">Resumo Â· Funcional</button><button type="button" class="tab" data-tab="personal">Mensalidades dos Personal</button><button type="button" class="tab" data-tab="financeiro">Saldo financeiro conjunto</button>
+<nav class="nav-tabs" aria-label="Seções do painel">
+  <button type="button" class="tab active" data-tab="controle">Controle mensal · Funcional</button>
+  <button type="button" class="tab" data-tab="resumo">Resumo · Funcional</button>
+  <button type="button" class="tab" data-tab="personal">Mensalidades dos Personal</button>
+  <button type="button" class="tab" data-tab="financeiro">Saldo financeiro conjunto</button>
 </nav>
+
 <div class="actions-toolbar" aria-label="Ferramentas do painel">
-<button type="button" class="btn primary" id="editBtn">â EDITAR: DESATIVADO</button><button type="button" class="btn hidden" id="addBtn">ï¼ Adicionar aluno</button><button type="button" class="btn" id="personalEditBtn">â EDITAR PERSONAL: DESATIVADO</button><button type="button" class="btn hidden" id="personalAddBtn">ï¼ Adicionar cliente</button><button type="button" class="btn" id="exportBtn">Exportar CSV Funcional</button><button type="button" class="btn" id="personalExportBtn">Exportar CSV Personal</button><button type="button" class="btn" id="backupBtn">Backup completo</button><button type="button" class="btn" id="restoreBtn">Restaurar backup</button><input id="restoreFile" type="file" accept=".json,application/json" hidden><span class="status" id="saveStatus" role="status">Dados salvos neste navegador</span>
+  <button type="button" class="btn primary" id="editBtn">✎ EDITAR: DESATIVADO</button>
+  <button type="button" class="btn hidden" id="addBtn">＋ Adicionar aluno</button>
+  <button type="button" class="btn" id="personalEditBtn">✎ EDITAR PERSONAL: DESATIVADO</button>
+  <button type="button" class="btn hidden" id="personalAddBtn">＋ Adicionar cliente</button>
+  <button type="button" class="btn" id="exportBtn">Exportar CSV Funcional</button>
+  <button type="button" class="btn" id="personalExportBtn">Exportar CSV Personal</button>
+  <button type="button" class="btn" id="backupBtn">Backup completo</button>
+  <button type="button" class="btn" id="restoreBtn">Restaurar backup</button>
+  <input id="restoreFile" type="file" accept=".json,application/json" hidden>
+  <span class="status" id="saveStatus" role="status">Dados salvos neste navegador</span>
 </div>
-<section id="controle" class="section active"><div class="metrics"><div class="metric"><span>Alunos do Funcional</span><strong id="studentCount">0</strong></div><div class="metric"><span>Recebido no mÃªs Â· Funcional</span><strong class="green" id="monthReceived">R$ 0,00</strong></div><div class="metric"><span>30% do Funcional (referÃªncia)</span><strong class="purple" id="monthRent">R$ 0,00</strong></div><div class="metric"><span>70% do Funcional (referÃªncia)</span><strong class="green" id="monthBalance">R$ 0,00</strong></div></div><div class="sheet"><div class="sheet-title"><h2>CONTROLE DE MENSALIDADES | FUNCIONAL</h2><p>Os cadastros e pagamentos permanecem separados do Personal. O aluguel oficial de 30% Ã© calculado sobre o total conjunto das duas modalidades.</p><div style="margin-top:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap"><label for="selectedMonth">MÃªs em destaque:</label><select id="selectedMonth" class="btn"></select></div></div><div class="table-hint"><span>Deslize a tabela para ver todos os meses</span><span>|</span><span>As somas ficam nas Ãºltimas linhas</span></div><div class="table-wrap" id="mainTableWrap"><table id="mainTable"></table></div><div class="note">Clique em EDITAR para alterar nomes, pagamentos ou fotos. Use o valor recebido para pagamentos confirmados e PENDENTE para quem ainda nÃ£o pagou.</div></div></section>
-<section id="resumo" class="section"><div class="metrics"><div class="metric"><span>Total recebido Â· Funcional</span><strong class="green" id="sumReceived">R$ 0,00</strong></div><div class="metric"><span>30% Funcional (referÃªncia)</span><strong class="purple" id="sumRent">R$ 0,00</strong></div><div class="metric"><span>70% Funcional (referÃªncia)</span><strong class="green" id="sumBalance">R$ 0,00</strong></div><div class="metric"><span>PendÃªncias Funcional</span><strong class="yellow" id="sumPending">0</strong></div></div><div class="sheet"><div class="sheet-title"><h2>RESUMO DE RECEBIMENTOS Â· FUNCIONAL</h2><p>Valores desta tabela sÃ£o apenas do Funcional. O cÃ¡lculo oficial do aluguel Ã© conjunto.</p></div><div class="table-wrap"><table id="summaryTable" class="summary-table"></table></div></div></section>
-<section id="personal" class="section"><div class="metrics"><div class="metric"><span>Clientes Personal</span><strong id="personalCount">0</strong></div><div class="metric"><span>Recebido no mÃªs Â· Personal</span><strong class="green" id="personalMonthReceived">R$ 0,00</strong></div><div class="metric"><span>30% Personal (referÃªncia)</span><strong class="purple" id="personalMonthRent">R$ 0,00</strong></div><div class="metric"><span>70% Personal (referÃªncia)</span><strong class="green" id="personalMonthBalance">R$ 0,00</strong></div></div><div class="sheet"><div class="sheet-title"><h2>CONTROLE DE MENSALIDADES | PERSONAL</h2><p>Clientes e pagamentos independentes do Funcional. Os 30% e 70% exibidos nesta seÃ§Ã£o sÃ£o referÃªncias; o cÃ¡lculo oficial usa Funcional + Personal.</p><div style="margin-top:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap"><label for="personalMonth">MÃªs em destaque:</label><select id="personalMonth" class="btn"></select></div></div><div class="table-hint"><span>Deslize a tabela para ver todos os meses</span><span>|</span><span>As somas ficam nas Ãºltimas linhas</span></div><div class="table-wrap" id="personalTableWrap"><table id="personalTable"></table></div></div><div class="sheet"><div class="sheet-title"><h2>RESUMO DE RECEBIMENTOS Â· PERSONAL</h2></div><div class="table-wrap"><table id="personalSummaryTable" class="summary-table"></table></div></div></section>
-<section id="financeiro" class="section"><div class="metrics"><div class="metric"><span>Recebimento conjunto acumulado</span><strong class="green" id="accReceived">R$ 0,00</strong></div><div class="metric"><span>Aluguel conjunto (30%)</span><strong class="purple" id="accRent">R$ 0,00</strong></div><div class="metric"><span>Saldo conjunto (70%)</span><strong class="green" id="accBalance">R$ 0,00</strong></div><div class="metric"><span>PendÃªncias registradas</span><strong class="yellow" id="accPending">0</strong></div></div><div class="sheet"><div class="sheet-title"><h2>SALDO FINANCEIRO | FUNCIONAL + PERSONAL</h2><p>O aluguel oficial Ã© 30% da soma dos recebimentos confirmados do Funcional e do Personal em cada mÃªs. O saldo restante Ã© 70% da mesma soma.</p></div><div class="table-wrap"><table id="financeTable" class="summary-table"></table></div><div class="note">Os controles por modalidade continuam separados. Para calcular aluguel e saldo, somamos primeiro os recebimentos do Funcional e do Personal e sÃ³ entÃ£o aplicamos 30% e 70%.</div></div></section>
-<div class="footer">CBA FUNCIONAL FUT Â· CONTROLE ADMINISTRATIVO DE MENSALIDADES<br>Mantenha cÃ³pias de seguranÃ§a atualizadas.</div></main>
-<dialog id="photoDialog"><div><h2 id="photoTitle">Foto do aluno</h2><img id="photoPreview" class="photo-preview" alt="PrÃ©via da foto" hidden><p id="photoMessage" style="color:#b6a9c2"></p><label id="photoUploadLabel" class="btn" for="photoInput">Selecionar foto da galeria</label><input id="photoInput" type="file" accept="image/*" hidden><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px"><button type="button" class="btn primary" id="savePhotoBtn">Salvar foto</button><button type="button" class="btn danger" id="removePhotoBtn">Remover foto</button><button type="button" class="btn" id="closePhotoBtn">Fechar</button></div></div></dialog>
+
+<section id="controle" class="section active">
+  <div class="metrics">
+    <div class="metric"><span>Alunos do Funcional</span><strong id="studentCount">0</strong></div>
+    <div class="metric"><span>Recebido no mês · Funcional</span><strong class="green" id="monthReceived">R$ 0,00</strong></div>
+    <div class="metric"><span>30% do Funcional (referência)</span><strong class="purple" id="monthRent">R$ 0,00</strong></div>
+    <div class="metric"><span>70% do Funcional (referência)</span><strong class="green" id="monthBalance">R$ 0,00</strong></div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-title">
+      <h2>CONTROLE DE MENSALIDADES | FUNCIONAL</h2>
+      <p>Os cadastros e pagamentos permanecem separados do Personal. O aluguel oficial de 30% é calculado sobre o total conjunto das duas modalidades.</p>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+        <label for="selectedMonth">Mês em destaque:</label>
+        <select id="selectedMonth" class="btn"></select>
+      </div>
+    </div>
+    <div class="table-hint"><span>Deslize a tabela para ver todos os meses</span><span>|</span><span>As somas ficam nas últimas linhas</span></div>
+    <div class="table-wrap"><table id="mainTable"></table></div>
+    <div class="note">Clique em EDITAR para alterar nomes, pagamentos ou fotos. Use o valor recebido para pagamentos confirmados e PENDENTE para quem ainda não pagou.</div>
+  </div>
+</section>
+
+<section id="resumo" class="section">
+  <div class="metrics">
+    <div class="metric"><span>Total recebido · Funcional</span><strong class="green" id="sumReceived">R$ 0,00</strong></div>
+    <div class="metric"><span>30% Funcional (referência)</span><strong class="purple" id="sumRent">R$ 0,00</strong></div>
+    <div class="metric"><span>70% Funcional (referência)</span><strong class="green" id="sumBalance">R$ 0,00</strong></div>
+    <div class="metric"><span>Pendências Funcional</span><strong class="yellow" id="sumPending">0</strong></div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-title"><h2>RESUMO DE RECEBIMENTOS · FUNCIONAL</h2><p>Valores desta tabela são apenas do Funcional. O cálculo oficial do aluguel é conjunto.</p></div>
+    <div class="table-wrap"><table id="summaryTable"></table></div>
+  </div>
+</section>
+
+<section id="personal" class="section">
+  <div class="metrics">
+    <div class="metric"><span>Clientes Personal</span><strong id="personalCount">0</strong></div>
+    <div class="metric"><span>Recebido no mês · Personal</span><strong class="green" id="personalMonthReceived">R$ 0,00</strong></div>
+    <div class="metric"><span>30% Personal (referência)</span><strong class="purple" id="personalMonthRent">R$ 0,00</strong></div>
+    <div class="metric"><span>70% Personal (referência)</span><strong class="green" id="personalMonthBalance">R$ 0,00</strong></div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-title">
+      <h2>CONTROLE DE MENSALIDADES | PERSONAL</h2>
+      <p>Clientes e pagamentos independentes do Funcional. Os 30% e 70% exibidos nesta seção são referências; o cálculo oficial usa Funcional + Personal.</p>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+        <label for="personalMonth">Mês em destaque:</label>
+        <select id="personalMonth" class="btn"></select>
+      </div>
+    </div>
+    <div class="table-hint"><span>Deslize a tabela para ver todos os meses</span><span>|</span><span>As somas ficam nas últimas linhas</span></div>
+    <div class="table-wrap"><table id="personalTable"></table></div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-title"><h2>RESUMO DE RECEBIMENTOS · PERSONAL</h2></div>
+    <div class="table-wrap"><table id="personalSummaryTable"></table></div>
+  </div>
+</section>
+
+<section id="financeiro" class="section">
+  <div class="metrics">
+    <div class="metric"><span>Recebimento conjunto acumulado</span><strong class="green" id="accReceived">R$ 0,00</strong></div>
+    <div class="metric"><span>Aluguel conjunto (30%)</span><strong class="purple" id="accRent">R$ 0,00</strong></div>
+    <div class="metric"><span>Saldo conjunto (70%)</span><strong class="green" id="accBalance">R$ 0,00</strong></div>
+    <div class="metric"><span>Pendências registradas</span><strong class="yellow" id="accPending">0</strong></div>
+  </div>
+  <div class="sheet">
+    <div class="sheet-title">
+      <h2>SALDO FINANCEIRO | FUNCIONAL + PERSONAL</h2>
+      <p>O aluguel oficial é 30% da soma dos recebimentos confirmados do Funcional e do Personal em cada mês. O saldo restante é 70% da mesma soma.</p>
+    </div>
+    <div class="table-wrap"><table id="financeTable"></table></div>
+    <div class="note">Os controles por modalidade continuam separados. Para calcular aluguel e saldo, somamos primeiro os recebimentos do Funcional e do Personal e só então aplicamos 30% e 70%.</div>
+  </div>
+</section>
+
+<div class="footer">CBA FUNCIONAL FUT · CONTROLE ADMINISTRATIVO DE MENSALIDADES<br>Mantenha cópias de segurança atualizadas.</div>
+</main>
+
+<dialog id="photoDialog">
+  <div>
+    <h2 id="photoTitle">Foto do aluno</h2>
+    <img id="photoPreview" class="photo-preview" alt="Prévia da foto" hidden>
+    <p id="photoMessage" style="color:#b6a9c2"></p>
+    <label id="photoUploadLabel" class="btn" for="photoInput">Selecionar foto da galeria</label>
+    <input id="photoInput" type="file" accept="image/*" hidden>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+      <button type="button" class="btn primary" id="savePhotoBtn">Salvar foto</button>
+      <button type="button" class="btn danger" id="removePhotoBtn">Remover foto</button>
+      <button type="button" class="btn" id="closePhotoBtn">Fechar</button>
+    </div>
+  </div>
+</dialog>
+
 <script>
 "use strict";
-const MONTHS=[["2026-10","Outubro/2026","OUT/26"],["2026-11","Novembro/2026","NOV/26"],["2026-12","Dezembro/2026","DEZ/26"],["2027-01","Janeiro/2027","JAN/27"],["2027-02","Fevereiro/2027","FEV/27"],["2027-03","MarÃ§o/2027","MAR/27"],["2027-04","Abril/2027","ABR/27"],["2027-05","Maio/2027","MAI/27"],["2027-06","Junho/2027","JUN/27"],["2027-07","Julho/2027","JUL/27"],["2027-08","Agosto/2027","AGO/27"],["2027-09","Setembro/2027","SET/27"],["2027-10","Outubro/2027","OUT/27"],["2027-11","Novembro/2027","NOV/27"],["2027-12","Dezembro/2027","DEZ/27"]];
-const FUNCTIONAL_KEY="cba_funcional_fut_planilha_v1",PERSONAL_KEY="cba_funcional_fut_personal_v1";let editing=false,personalEditing=false,students=[],personalClients=[],selectedMonth="2026-10",personalMonth="2026-10",photoTarget=null,pendingPhoto="";
-const $=id=>document.getElementById(id);function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}function blankPerson(name=""){let payments={};MONTHS.forEach(m=>payments[m[0]]="");return{id:makeId(),name,payments,photo:""}}
-function money(v){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0)}function parseMoney(v){if(typeof v==="number")return Number.isFinite(v)?v:0;let s=String(v??"").trim().replace(/\s/g,"");if(!s||s.toUpperCase()==="PENDENTE")return 0;s=s.replace(/^R\$/i,"");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");let n=Number(s);return Number.isFinite(n)&&n>0?n:0}function isPending(v){return String(v??"").trim().toUpperCase()==="PENDENTE"}function safeText(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function loadSet(key){try{let d=JSON.parse(localStorage.getItem(key)||"null");if(d&&Array.isArray(d.students))return{people:d.students.map(s=>({id:s.id||makeId(),name:String(s.name||""),payments:Object.fromEntries(MONTHS.map(m=>[m[0],s.payments?.[m[0]]??""])),photo:typeof s.photo==="string"?s.photo:""})),month:MONTHS.some(m=>m[0]===d.selectedMonth)?d.selectedMonth:MONTHS[0][0]}}catch(e){}return{people:Array.from({length:50},()=>blankPerson("")),month:MONTHS[0][0]}}
-function loadData(){let f=loadSet(FUNCTIONAL_KEY),p=loadSet(PERSONAL_KEY);students=f.people;selectedMonth=f.month;personalClients=p.people;personalMonth=p.month}
-function saveSet(key,people,month){try{localStorage.setItem(key,JSON.stringify({students:people,selectedMonth:month}));$("saveStatus").textContent="Salvo automaticamente"}catch(e){$("saveStatus").textContent="Armazenamento cheio";alert("NÃ£o foi possÃ­vel salvar: o armazenamento pode estar cheio. FaÃ§a backup e remova ou reduza algumas fotos.")}}function saveFunctional(){saveSet(FUNCTIONAL_KEY,students,selectedMonth)}function savePersonal(){saveSet(PERSONAL_KEY,personalClients,personalMonth)}
-function totals(people,month){let received=0,pendingCount=0,paidCount=0;people.forEach(s=>{let v=s.payments[month];if(isPending(v))pendingCount++;else if(String(v??"").trim()!==""){let n=parseMoney(v);received+=n;if(n>0)paidCount++}});return{received,rent:received*.3,balance:received*.7,pendingCount,paidCount}}
-function setText(id,v){$(id).textContent=v}function paymentCell(s,month,kind){let v=s.payments[month]??"",edit=kind==="personal"?personalEditing:editing;if(edit)return `<td class="money"><input class="cell-input payment-input" data-kind="${kind}" data-id="${s.id}" data-month="${month}" value="${safeText(v)}" placeholder="Valor ou PENDENTE" aria-label="Pagamento de ${safeText(s.name)}"></td>`;if(isPending(v))return '<td class="money-cell pending">PENDENTE</td>';if(String(v).trim()==="")return '<td class="money-cell">â</td>';return `<td class="money-cell paid">${money(parseMoney(v))}</td>`}
-function renderPeopleTable(tableId,people,kind){let edit=kind==="personal"?personalEditing:editing,html="<thead><tr><th>FOTO</th><th>NÂº</th><th class='name-cell'>NOME DO ALUNO / CLIENTE</th>"+MONTHS.map(m=>`<th>${m[2]}</th>`).join("")+"<th>AÃÃES</th></tr></thead><tbody>";people.forEach((s,i)=>{html+=`<tr><td class="photo-cell">${s.photo?`<img class="photo-thumb" src="${s.photo}" alt="Foto de ${safeText(s.name||'aluno')}" data-photo="${s.id}" data-kind="${kind}">`:""}<a href="#" class="photo-link" data-photo="${s.id}" data-kind="${kind}">${s.photo?"Ver / trocar":"ï¼ Foto"}</a></td><td>${i+1}</td><td class="name-cell">`+(edit?`<input class="cell-input name-input name-input-field" data-kind="${kind}" data-id="${s.id}" value="${safeText(s.name)}" placeholder="Digite o nome">`:safeText(s.name||"â"))+"</td>";MONTHS.forEach(m=>html+=paymentCell(s,m[0],kind));html+=`<td>${edit?`<button type="button" class="btn small danger remove-person" data-kind="${kind}" data-id="${s.id}">Remover</button>`:"â"}</td></tr>`});html+="</tbody><tfoot>";[["TOTAL RECEBIDO","received",""],["30% (REFERÃNCIA)","rent","purple"],["70% (REFERÃNCIA)","balance","green"]].forEach(([label,key,cls])=>{html+=`<tr><td colspan="2" style="text-align:left">${label}</td>`+MONTHS.map(m=>`<td class="${cls}">${money(totals(people,m[0])[key])}</td>`).join("")+"<td></td></tr>"});html+="</tfoot>";$(tableId).innerHTML=html;$(tableId==="mainTable"?"mainTableWrap":"personalTableWrap").classList.toggle("editing",edit)}
-function renderSummary(tableId,people){let html="<thead><tr><th>MÃS</th><th>TOTAL RECEBIDO</th><th>PENDÃNCIAS</th><th>ALUNOS COM PAGAMENTO</th><th>30% (REFERÃNCIA)</th><th>70% (REFERÃNCIA)</th></tr></thead><tbody>",all={received:0,pendingCount:0,paidCount:0,rent:0,balance:0};MONTHS.forEach(m=>{let t=totals(people,m[0]);Object.keys(all).forEach(k=>all[k]+=t[k]);html+=`<tr><td>${m[1]}</td><td>${money(t.received)}</td><td>${t.pendingCount}</td><td>${t.paidCount}</td><td class="purple">${money(t.rent)}</td><td class="green">${money(t.balance)}</td></tr>`});html+=`</tbody><tfoot><tr><td>TOTAL DO PERÃODO</td><td>${money(all.received)}</td><td>${all.pendingCount}</td><td>${all.paidCount}</td><td>${money(all.rent)}</td><td>${money(all.balance)}</td></tr></tfoot>`;$(tableId).innerHTML=html;return all}
-function renderFinance(){let html="<thead><tr><th>MÃS</th><th>FUNCIONAL</th><th>PERSONAL</th><th>TOTAL CONJUNTO</th><th>ALUGUEL CONJUNTO (30%)</th><th>SALDO CONJUNTO (70%)</th><th>PENDÃNCIAS</th><th>ACUMULADO</th></tr></thead><tbody>",acc=0,total=0,rent=0,balance=0,pending=0;MONTHS.forEach(m=>{let f=totals(students,m[0]),p=totals(personalClients,m[0]),sum=f.received+p.received,r=sum*.3,b=sum*.7;acc+=sum;total+=sum;rent+=r;balance+=b;pending+=f.pendingCount+p.pendingCount;html+=`<tr><td>${m[1]}</td><td>${money(f.received)}</td><td>${money(p.received)}</td><td>${money(sum)}</td><td class="purple">${money(r)}</td><td class="green">${money(b)}</td><td>${f.pendingCount+p.pendingCount}</td><td>${money(acc)}</td></tr>`});$("financeTable").innerHTML=html+"</tbody>";setText("accReceived",money(total));setText("accRent",money(rent));setText("accBalance",money(balance));setText("accPending",pending)}
-function renderAll(){renderPeopleTable("mainTable",students,"functional");renderPeopleTable("personalTable",personalClients,"personal");let f=totals(students,selectedMonth),p=totals(personalClients,personalMonth);setText("studentCount",students.filter(s=>s.name.trim()).length);setText("monthReceived",money(f.received));setText("monthRent",money(f.rent));setText("monthBalance",money(f.balance));setText("personalCount",personalClients.filter(s=>s.name.trim()).length);setText("personalMonthReceived",money(p.received));setText("personalMonthRent",money(p.rent));setText("personalMonthBalance",money(p.balance));let a=renderSummary("summaryTable",students);setText("sumReceived",money(a.received));setText("sumRent",money(a.rent));setText("sumBalance",money(a.balance));setText("sumPending",a.pendingCount);renderSummary("personalSummaryTable",personalClients);renderFinance()}
-function setupSelect(id,month){$(id).innerHTML=MONTHS.map(m=>`<option value="${m[0]}">${m[1]}</option>`).join("");$(id).value=month}
-document.querySelectorAll(".nav-tabs .tab").forEach(b=>b.addEventListener("click",()=>{let target=$(b.dataset.tab);if(!target)return;document.querySelectorAll(".nav-tabs .tab").forEach(x=>{x.classList.remove("active");x.setAttribute("aria-selected","false")});document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));b.classList.add("active");b.setAttribute("aria-selected","true");target.classList.add("active");}));
-$("selectedMonth").addEventListener("change",e=>{selectedMonth=e.target.value;saveFunctional();renderAll()});$("personalMonth").addEventListener("change",e=>{personalMonth=e.target.value;savePersonal();renderAll()});
-$("editBtn").addEventListener("click",()=>{editing=!editing;$("editBtn").textContent=editing?"â CONCLUIR EDIÃÃO":"â EDITAR: DESATIVADO";$("editBtn").classList.toggle("primary",editing);$("addBtn").classList.toggle("hidden",!editing);renderAll()});$("personalEditBtn").addEventListener("click",()=>{personalEditing=!personalEditing;$("personalEditBtn").textContent=personalEditing?"â CONCLUIR EDIÃÃO PERSONAL":"â EDITAR PERSONAL: DESATIVADO";$("personalEditBtn").classList.toggle("primary",personalEditing);$("personalAddBtn").classList.toggle("hidden",!personalEditing);renderAll()});
-$("addBtn").addEventListener("click",()=>{if(!editing)return alert("Ative EDITAR antes de adicionar.");students.push(blankPerson(""));saveFunctional();renderAll()});$("personalAddBtn").addEventListener("click",()=>{if(!personalEditing)return alert("Ative EDITAR PERSONAL antes de adicionar.");personalClients.push(blankPerson(""));savePersonal();renderAll()});
-function handleChange(e){let el=e.target,kind=el.dataset.kind,personal=kind==="personal",people=personal?personalClients:students;if(el.classList.contains("payment-input")){let s=people.find(x=>x.id===el.dataset.id);if(!s)return;let raw=el.value.trim();if(raw&&!isPending(raw)&&parseMoney(raw)<=0){alert("Digite um valor vÃ¡lido ou PENDENTE.");renderAll();return}s.payments[el.dataset.month]=isPending(raw)?"PENDENTE":raw;personal?savePersonal():saveFunctional();renderAll()}else if(el.classList.contains("name-input-field")){let s=people.find(x=>x.id===el.dataset.id);if(s){s.name=el.value.trim();personal?savePersonal():saveFunctional();renderAll()}}}
-$("mainTable").addEventListener("change",handleChange);$("personalTable").addEventListener("change",handleChange);
-function handleTableClick(e){let photo=e.target.closest("[data-photo]");if(photo){e.preventDefault();openPhoto(photo.dataset.photo,photo.dataset.kind);return}let btn=e.target.closest(".remove-person");if(btn){let personal=btn.dataset.kind==="personal",people=personal?personalClients:students,s=people.find(x=>x.id===btn.dataset.id);if(s&&confirm(`Remover ${s.name||"este cadastro"} e seus pagamentos?`)){if(personal)personalClients=personalClients.filter(x=>x.id!==s.id);else students=students.filter(x=>x.id!==s.id);personal?savePersonal():saveFunctional();renderAll()}}}
-$("mainTable").addEventListener("click",handleTableClick);$("personalTable").addEventListener("click",handleTableClick);
-function openPhoto(id,kind){let people=kind==="personal"?personalClients:students,s=people.find(x=>x.id===id);if(!s)return;photoTarget={id,kind};pendingPhoto=s.photo||"";$("photoTitle").textContent="Foto Â· "+(s.name||"Cadastro sem nome");let canEdit=kind==="personal"?personalEditing:editing;$("photoMessage").textContent=canEdit?"Selecione uma imagem da galeria e toque em Salvar foto.":"VisualizaÃ§Ã£o da foto. Ative a ediÃ§Ã£o para alterar ou remover.";["photoUploadLabel","savePhotoBtn","removePhotoBtn"].forEach(id=>$(id).classList.toggle("hidden",!canEdit));$("photoInput").disabled=!canEdit;$("photoPreview").hidden=!pendingPhoto;$("photoPreview").src=pendingPhoto;$("photoInput").value="";$("photoDialog").showModal()}
-function compressImage(file){return new Promise((resolve,reject)=>{let r=new FileReader();r.onerror=reject;r.onload=()=>{let img=new Image();img.onerror=reject;img.onload=()=>{let scale=Math.min(1,600/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));c.getContext("2d").drawImage(img,0,0,c.width,c.height);resolve(c.toDataURL("image/jpeg",.7))};img.src=r.result};r.readAsDataURL(file)})}
-$("photoInput").addEventListener("change",async e=>{let file=e.target.files[0];if(!file)return;if(!file.type.startsWith("image/"))return alert("Selecione uma imagem.");try{pendingPhoto=await compressImage(file);$("photoPreview").src=pendingPhoto;$("photoPreview").hidden=false}catch(err){alert("NÃ£o foi possÃ­vel abrir a imagem.")}});
-$("closePhotoBtn").addEventListener("click",()=>$("photoDialog").close());$("savePhotoBtn").addEventListener("click",()=>{if(!photoTarget)return;let p=photoTarget.kind==="personal",people=p?personalClients:students,s=people.find(x=>x.id===photoTarget.id);if(s)s.photo=pendingPhoto||"";p?savePersonal():saveFunctional();renderAll();$("photoDialog").close()});$("removePhotoBtn").addEventListener("click",()=>{if(!photoTarget)return;if(!confirm("Remover esta foto?"))return;let p=photoTarget.kind==="personal",people=p?personalClients:students,s=people.find(x=>x.id===photoTarget.id);if(s)s.photo="";p?savePersonal():saveFunctional();renderAll();$("photoDialog").close()});
-function downloadBlob(blob,name){let url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}function exportCsv(people,name){let rows=[["NÂº","NOME",...MONTHS.map(m=>m[2])]];people.forEach((s,i)=>rows.push([i+1,s.name,...MONTHS.map(m=>s.payments[m[0]]??"")]));rows.push(["","TOTAL RECEBIDO",...MONTHS.map(m=>totals(people,m[0]).received.toFixed(2).replace(".",",") )]);let csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\r\n");downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8;"}),name)}
-$("exportBtn").addEventListener("click",()=>exportCsv(students,"CBA_Funcional_FUT_Controle_Mensalidades.csv"));$("personalExportBtn").addEventListener("click",()=>exportCsv(personalClients,"CBA_Personal_Controle_Mensalidades.csv"));
-$("backupBtn").addEventListener("click",()=>downloadBlob(new Blob([JSON.stringify({functional:{students,selectedMonth},personal:{students:personalClients,selectedMonth:personalMonth}},null,2)],{type:"application/json"}),"CBA_Funcional_FUT_Backup_Completo.json"));
-$("restoreBtn").addEventListener("click",()=>$("restoreFile").click());$("restoreFile").addEventListener("change",async e=>{let file=e.target.files[0];if(!file)return;try{let d=JSON.parse(await file.text()),f=d.functional||d,p=d.personal;if(!Array.isArray(f.students))throw Error("Formato invÃ¡lido");if(!confirm("A restauraÃ§Ã£o substituirÃ¡ os dados atuais do Funcional e do Personal. Deseja continuar?"))return;const normalize=a=>a.map(s=>({id:s.id||makeId(),name:String(s.name||""),payments:Object.fromEntries(MONTHS.map(m=>[m[0],s.payments?.[m[0]]??""])),photo:typeof s.photo==="string"?s.photo:""}));students=normalize(f.students);selectedMonth=MONTHS.some(m=>m[0]===f.selectedMonth)?f.selectedMonth:MONTHS[0][0];if(p&&Array.isArray(p.students)){personalClients=normalize(p.students);personalMonth=MONTHS.some(m=>m[0]===p.selectedMonth)?p.selectedMonth:MONTHS[0][0]}setupSelect("selectedMonth",selectedMonth);setupSelect("personalMonth",personalMonth);saveFunctional();savePersonal();renderAll();alert("Backup restaurado.")}catch(err){alert("NÃ£o foi possÃ­vel restaurar. Confira se o arquivo JSON Ã© vÃ¡lido.")}finally{e.target.value=""}});
-loadData();setupSelect("selectedMonth",selectedMonth);setupSelect("personalMonth",personalMonth);renderAll();
-</script></body></html>
+
+const MONTHS=[
+["2026-10","Outubro/2026","OUT/26"],
+["2026-11","Novembro/2026","NOV/26"],
+["2026-12","Dezembro/2026","DEZ/26"],
+["2027-01","Janeiro/2027","JAN/27"],
+["2027-02","Fevereiro/2027","FEV/27"],
+["2027-03","Março/2027","MAR/27"],
+["2027-04","Abril/2027","ABR/27"],
+["2027-05","Maio/2027","MAI/27"],
+["2027-06","Junho/2027","JUN/27"],
+["2027-07","Julho/2027","JUL/27"],
+["2027-08","Agosto/2027","AGO/27"],
+["2027-09","Setembro/2027","SET/27"],
+["2027-10","Outubro/2027","OUT/27"],
+["2027-11","Novembro/2027","NOV/27"],
+["2027-12","Dezembro/2027","DEZ/27"]
+];
+
+const FUNCTIONAL_KEY="cba_funcional_fut_planilha_v1";
+const PERSONAL_KEY="cba_funcional_fut_personal_v1";
+let editing=false,personalEditing=false,students=[],personalClients=[];
+let selectedMonth="2026-10",personalMonth="2026-10",photoTarget=null,pendingPhoto="";
+
+const $=id=>document.getElementById(id);
+function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function blankPerson(name=""){
+  const payments={};
+  MONTHS.forEach(m=>payments[m[0]]="");
+  return{id:makeId(),name,payments,photo:""};
+}
+function money(v){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0)}
+function parseMoney(v){
+  if(typeof v==="number")return Number.isFinite(v)?v:0;
+  let s=String(v??"").trim().replace(/\s/g,"");
+  if(!s||s.toUpperCase()==="PENDENTE")return 0;
+  s=s.replace(/^R\$/i,"");
+  if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");
+  const n=Number(s);
+  return Number.isFinite(n)&&n>0?n:0;
+}
+function isPending(v){return String(v??"").trim().toUpperCase()==="PENDENTE"}
+function safeText(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function normalizePeople(arr){
+  return arr.map(s=>({
+    id:s.id||makeId(),
+    name:String(s.name||""),
+    payments:Object.fromEntries(MONTHS.map(m=>[m[0],s.payments?.[m[0]]??""])),
+    photo:typeof s.photo==="string"?s.photo:""
+  }));
+}
+function loadSet(key){
+  try{
+    const d=JSON.parse(localStorage.getItem(key)||"null");
+    if(d&&Array.isArray(d.students)){
+      return{
+        people:normalizePeople(d.students),
+        month:MONTHS.some(m=>m[0]===d.selectedMonth)?d.selectedMonth:MONTHS[0][0]
+      };
+    }
+  }catch(e){}
+  return{people:Array.from({length:50},()=>blankPerson("")),month:MONTHS[0][0]};
+}
+function loadData(){
+  const f=loadSet(FUNCTIONAL_KEY),p=loadSet(PERSONAL_KEY);
+  students=f.people;selectedMonth=f.month;
+  personalClients=p.people;personalMonth=p.month;
+}
+function saveSet(key,people,month){
+  try{
+    localStorage.setItem(key,JSON.stringify({students:people,selectedMonth:month}));
+    $("saveStatus").textContent="Salvo automaticamente";
+  }catch(e){
+    $("saveStatus").textContent="Armazenamento cheio";
+    alert("Não foi possível salvar. O armazenamento pode estar cheio. Faça um backup e reduza o tamanho das fotos.");
+  }
+}
+function saveFunctional(){saveSet(FUNCTIONAL_KEY,students,selectedMonth)}
+function savePersonal(){saveSet(PERSONAL_KEY,personalClients,personalMonth)}
+function totals(people,month){
+  let received=0,pendingCount=0,paidCount=0;
+  people.forEach(s=>{
+    const v=s.payments[month];
+    if(isPending(v))pendingCount++;
+    else if(String(v??"").trim()!==""){
+      const n=parseMoney(v);received+=n;if(n>0)paidCount++;
+    }
+  });
+  return{received,rent:received*.3,balance:received*.7,pendingCount,paidCount};
+}
+function setText(id,v){$(id).textContent=v}
+function paymentCell(s,month,kind){
+  const v=s.payments[month]??"";
+  const edit=kind==="personal"?personalEditing:editing;
+  if(edit)return `<td class="money"><input class="cell-input payment-input" data-kind="${kind}" data-id="${s.id}" data-month="${month}" value="${safeText(v)}" placeholder="Valor ou PENDENTE" aria-label="Pagamento de ${safeText(s.name)}"></td>`;
+  if(isPending(v))return '<td class="money-cell pending">PENDENTE</td>';
+  if(String(v).trim()==="")return '<td class="money-cell">—</td>';
+  return `<td class="money-cell paid">${money(parseMoney(v))}</td>`;
+}
+function renderPeopleTable(tableId,people,kind){
+  const edit=kind==="personal"?personalEditing:editing;
+  let html="<thead><tr><th>FOTO</th><th>Nº</th><th class='name'>NOME DO ALUNO / CLIENTE</th>";
+  html+=MONTHS.map(m=>`<th>${m[2]}</th>`).join("")+"<th>AÇÕES</th></tr></thead><tbody>";
+  people.forEach((s,i)=>{
+    html+=`<tr><td class="photo-cell">`;
+    if(s.photo)html+=`<img class="photo-thumb" src="${s.photo}" alt="Foto de ${safeText(s.name||"aluno")}" data-photo="${s.id}" data-kind="${kind}">`;
+    html+=`<a href="#" class="photo-link" data-photo="${s.id}" data-kind="${kind}">${s.photo?"Ver / trocar":"＋ Foto"}</a></td>`;
+    html+=`<td>${i+1}</td><td class="name">`;
+    html+=edit?`<input class="cell-input name-input name-input-field" data-kind="${kind}" data-id="${s.id}" value="${safeText(s.name)}" placeholder="Digite o nome">`:safeText(s.name);
+    html+="</td>";
+    MONTHS.forEach(m=>html+=paymentCell(s,m[0],kind));
+    html+=`<td class="row-actions">${edit?`<button type="button" class="btn danger small remove-person" data-kind="${kind}" data-id="${s.id}">Remover</button>`:"—"}</td></tr>`;
+  });
+  html+="</tbody><tfoot><tr><td colspan='3'>TOTAL RECEBIDO</td>";
+  MONTHS.forEach(m=>html+=`<td>${money(totals(people,m[0]).received)}</td>`);
+  html+="<td>—</td></tr></tfoot>";
+  $(tableId).innerHTML=html;
+}
+function renderSummary(tableId,people){
+  let html="<thead><tr><th>MÊS</th><th>RECEBIDO</th><th>PENDÊNCIAS</th><th>PAGAMENTOS CONFIRMADOS</th><th>30% (REFERÊNCIA)</th><th>70% (REFERÊNCIA)</th></tr></thead><tbody>";
+  let all={received:0,pendingCount:0,paidCount:0,rent:0,balance:0};
+  MONTHS.forEach(m=>{
+    const t=totals(people,m[0]);
+    Object.keys(all).forEach(k=>all[k]+=t[k]);
+    html+=`<tr><td>${m[1]}</td><td>${money(t.received)}</td><td>${t.pendingCount}</td><td>${t.paidCount}</td><td class="purple">${money(t.rent)}</td><td class="green">${money(t.balance)}</td></tr>`;
+  });
+  html+=`</tbody><tfoot><tr><td>TOTAL DO PERÍODO</td><td>${money(all.received)}</td><td>${all.pendingCount}</td><td>${all.paidCount}</td><td>${money(all.rent)}</td><td>${money(all.balance)}</td></tr></tfoot>`;
+  $(tableId).innerHTML=html;
+  return all;
+}
+function renderFinance(){
+  let html="<thead><tr><th>MÊS</th><th>FUNCIONAL</th><th>PERSONAL</th><th>TOTAL CONJUNTO</th><th>ALUGUEL CONJUNTO (30%)</th><th>SALDO CONJUNTO (70%)</th><th>PENDÊNCIAS</th><th>ACUMULADO</th></tr></thead><tbody>";
+  let acc=0,total=0,rent=0,balance=0,pending=0;
+  MONTHS.forEach(m=>{
+    const f=totals(students,m[0]),p=totals(personalClients,m[0]);
+    const sum=f.received+p.received,r=sum*.3,b=sum*.7;
+    acc+=sum;total+=sum;rent+=r;balance+=b;pending+=f.pendingCount+p.pendingCount;
+    html+=`<tr><td>${m[1]}</td><td>${money(f.received)}</td><td>${money(p.received)}</td><td>${money(sum)}</td><td class="purple">${money(r)}</td><td class="green">${money(b)}</td><td>${f.pendingCount+p.pendingCount}</td><td>${money(acc)}</td></tr>`;
+  });
+  $("financeTable").innerHTML=html+"</tbody>";
+  setText("accReceived",money(total));setText("accRent",money(rent));
+  setText("accBalance",money(balance));setText("accPending",pending);
+}
+function renderAll(){
+  renderPeopleTable("mainTable",students,"functional");
+  renderPeopleTable("personalTable",personalClients,"personal");
+  const f=totals(students,selectedMonth),p=totals(personalClients,personalMonth);
+  setText("studentCount",students.filter(s=>s.name.trim()).length);
+  setText("monthReceived",money(f.received));setText("monthRent",money(f.rent));setText("monthBalance",money(f.balance));
+  setText("personalCount",personalClients.filter(s=>s.name.trim()).length);
+  setText("personalMonthReceived",money(p.received));setText("personalMonthRent",money(p.rent));setText("personalMonthBalance",money(p.balance));
+  const a=renderSummary("summaryTable",students);
+  setText("sumReceived",money(a.received));setText("sumRent",money(a.rent));setText("sumBalance",money(a.balance));setText("sumPending",a.pendingCount);
+  renderSummary("personalSummaryTable",personalClients);
+  renderFinance();
+}
+function setupSelect(id,month){
+  $(id).innerHTML=MONTHS.map(m=>`<option value="${m[0]}">${m[1]}</option>`).join("");
+  $(id).value=month;
+}
+
+document.querySelectorAll(".nav-tabs .tab").forEach(b=>b.addEventListener("click",()=>{
+  const target=$(b.dataset.tab);if(!target)return;
+  document.querySelectorAll(".nav-tabs .tab").forEach(x=>{x.classList.remove("active");x.setAttribute("aria-selected","false")});
+  document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");b.setAttribute("aria-selected","true");target.classList.add("active");
+}));
+$("selectedMonth").addEventListener("change",e=>{selectedMonth=e.target.value;saveFunctional();renderAll()});
+$("personalMonth").addEventListener("change",e=>{personalMonth=e.target.value;savePersonal();renderAll()});
+
+$("editBtn").addEventListener("click",()=>{
+  editing=!editing;
+  $("editBtn").textContent=editing?"✓ CONCLUIR EDIÇÃO":"✎ EDITAR: DESATIVADO";
+  $("editBtn").classList.toggle("primary",editing);
+  $("addBtn").classList.toggle("hidden",!editing);
+  renderAll();
+});
+$("personalEditBtn").addEventListener("click",()=>{
+  personalEditing=!personalEditing;
+  $("personalEditBtn").textContent=personalEditing?"✓ CONCLUIR EDIÇÃO PERSONAL":"✎ EDITAR PERSONAL: DESATIVADO";
+  $("personalEditBtn").classList.toggle("primary",personalEditing);
+  $("personalAddBtn").classList.toggle("hidden",!personalEditing);
+  renderAll();
+});
+$("addBtn").addEventListener("click",()=>{
+  if(!editing)return alert("Ative EDITAR antes de adicionar.");
+  students.push(blankPerson(""));saveFunctional();renderAll();
+});
+$("personalAddBtn").addEventListener("click",()=>{
+  if(!personalEditing)return alert("Ative EDITAR PERSONAL antes de adicionar.");
+  personalClients.push(blankPerson(""));savePersonal();renderAll();
+});
+
+function handleChange(e){
+  const el=e.target,kind=el.dataset.kind,personal=kind==="personal";
+  const people=personal?personalClients:students;
+  if(el.classList.contains("payment-input")){
+    const s=people.find(x=>x.id===el.dataset.id);if(!s)return;
+    const raw=el.value.trim();
+    if(raw&&!isPending(raw)&&parseMoney(raw)<=0){alert("Digite um valor válido ou PENDENTE.");renderAll();return}
+    s.payments[el.dataset.month]=isPending(raw)?"PENDENTE":raw;
+    personal?savePersonal():saveFunctional();renderAll();
+  }else if(el.classList.contains("name-input-field")){
+    const s=people.find(x=>x.id===el.dataset.id);
+    if(s){s.name=el.value.trim();personal?savePersonal():saveFunctional();renderAll()}
+  }
+}
+$("mainTable").addEventListener("change",handleChange);
+$("personalTable").addEventListener("change",handleChange);
+
+function handleTableClick(e){
+  const photo=e.target.closest("[data-photo]");
+  if(photo){e.preventDefault();openPhoto(photo.dataset.photo,photo.dataset.kind);return}
+  const btn=e.target.closest(".remove-person");
+  if(btn){
+    const personal=btn.dataset.kind==="personal";
+    const people=personal?personalClients:students;
+    const s=people.find(x=>x.id===btn.dataset.id);
+    if(s&&confirm(`Remover ${s.name||"este cadastro"} e seus pagamentos?`)){
+      if(personal)personalClients=personalClients.filter(x=>x.id!==s.id);
+      else students=students.filter(x=>x.id!==s.id);
+      personal?savePersonal():saveFunctional();renderAll();
+    }
+  }
+}
+$("mainTable").addEventListener("click",handleTableClick);
+$("personalTable").addEventListener("click",handleTableClick);
+
+function openPhoto(id,kind){
+  const people=kind==="personal"?personalClients:students,s=people.find(x=>x.id===id);
+  if(!s)return;
+  photoTarget={id,kind};pendingPhoto=s.photo||"";
+  $("photoTitle").textContent="Foto · "+(s.name||"Cadastro sem nome");
+  const canEdit=kind==="personal"?personalEditing:editing;
+  $("photoMessage").textContent=canEdit?"Selecione uma imagem da galeria e toque em Salvar foto.":"Visualização da foto. Ative a edição para alterar ou remover.";
+  ["photoUploadLabel","savePhotoBtn","removePhotoBtn"].forEach(id=>$(id).classList.toggle("hidden",!canEdit));
+  $("photoInput").disabled=!canEdit;
+  $("photoPreview").hidden=!pendingPhoto;$("photoPreview").src=pendingPhoto;
+  $("photoInput").value="";$("photoDialog").showModal();
+}
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onerror=reject;
+    r.onload=()=>{
+      const img=new Image();
+      img.onerror=reject;
+      img.onload=()=>{
+        const scale=Math.min(1,600/Math.max(img.width,img.height));
+        const c=document.createElement("canvas");
+        c.width=Math.max(1,Math.round(img.width*scale));
+        c.height=Math.max(1,Math.round(img.height*scale));
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        resolve(c.toDataURL("image/jpeg",.7));
+      };
+      img.src=r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+$("photoInput").addEventListener("change",async e=>{
+  const file=e.target.files[0];if(!file)return;
+  if(!file.type.startsWith("image/"))return alert("Selecione uma imagem.");
+  try{pendingPhoto=await compressImage(file);$("photoPreview").src=pendingPhoto;$("photoPreview").hidden=false}
+  catch(err){alert("Não foi possível abrir a imagem.")}
+});
+$("closePhotoBtn").addEventListener("click",()=>$("photoDialog").close());
+$("savePhotoBtn").addEventListener("click",()=>{
+  if(!photoTarget)return;
+  const p=photoTarget.kind==="personal",people=p?personalClients:students;
+  const s=people.find(x=>x.id===photoTarget.id);
+  if(s)s.photo=pendingPhoto||"";
+  p?savePersonal():saveFunctional();renderAll();$("photoDialog").close();
+});
+$("removePhotoBtn").addEventListener("click",()=>{
+  if(!photoTarget||!confirm("Remover esta foto?"))return;
+  const p=photoTarget.kind==="personal",people=p?personalClients:students;
+  const s=people.find(x=>x.id===photoTarget.id);
+  if(s)s.photo="";
+  p?savePersonal():saveFunctional();renderAll();$("photoDialog").close();
+});
+
+function downloadBlob(blob,name){
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function exportCsv(people,name){
+  const rows=[["Nº","NOME",...MONTHS.map(m=>m[2])]];
+  people.forEach((s,i)=>rows.push([i+1,s.name,...MONTHS.map(m=>s.payments[m[0]]??"")]));
+  rows.push(["","TOTAL RECEBIDO",...MONTHS.map(m=>totals(people,m[0]).received.toFixed(2).replace(".",","))]);
+  const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\r\n");
+  downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8;"}),name);
+}
+$("exportBtn").addEventListener("click",()=>exportCsv(students,"CBA_Funcional_FUT_Controle_Mensalidades.csv"));
+$("personalExportBtn").addEventListener("click",()=>exportCsv(personalClients,"CBA_Personal_Controle_Mensalidades.csv"));
+$("backupBtn").addEventListener("click",()=>downloadBlob(
+  new Blob([JSON.stringify({functional:{students,selectedMonth},personal:{students:personalClients,selectedMonth:personalMonth}},null,2)],{type:"application/json"}),
+  "CBA_Funcional_FUT_Backup_Completo.json"
+));
+$("restoreBtn").addEventListener("click",()=>$("restoreFile").click());
+$("restoreFile").addEventListener("change",async e=>{
+  const file=e.target.files[0];if(!file)return;
+  try{
+    const d=JSON.parse(await file.text()),f=d.functional||d,p=d.personal;
+    if(!Array.isArray(f.students))throw Error("Formato inválido");
+    if(!confirm("A restauração substituirá os dados atuais do Funcional e do Personal. Deseja continuar?"))return;
+    students=normalizePeople(f.students);
+    selectedMonth=MONTHS.some(m=>m[0]===f.selectedMonth)?f.selectedMonth:MONTHS[0][0];
+    if(p&&Array.isArray(p.students)){
+      personalClients=normalizePeople(p.students);
+      personalMonth=MONTHS.some(m=>m[0]===p.selectedMonth)?p.selectedMonth:MONTHS[0][0];
+    }
+    setupSelect("selectedMonth",selectedMonth);setupSelect("personalMonth",personalMonth);
+    saveFunctional();savePersonal();renderAll();alert("Backup restaurado.");
+  }catch(err){alert("Não foi possível restaurar. Confira se o arquivo JSON é válido.")}
+  finally{e.target.value=""}
+});
+
+loadData();
+setupSelect("selectedMonth",selectedMonth);
+setupSelect("personalMonth",personalMonth);
+renderAll();
+</script>
+</body>
+</html>
