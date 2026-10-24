@@ -260,7 +260,7 @@ function loadSet(key){
       };
     }
   }catch(e){}
-  return{people:Array.from({length:50},()=>blankPerson("")),month:MONTHS[0][0]};
+  return{people:Array.from({length:150},()=>blankPerson("")),month:MONTHS[0][0]};
 }
 function loadData(){
   const f=loadSet(FUNCTIONAL_KEY),p=loadSet(PERSONAL_KEY);
