@@ -251,6 +251,7 @@ function normalizePeople(arr){
     id:s.id||makeId(),
     name:String(s.name||""),
     payments:Object.fromEntries(MONTHS.map(m=>[m[0],s.payments?.[m[0]]??""])),
+    receipts:Object.fromEntries(MONTHS.map(m=>[m[0],typeof s.receipts?.[m[0]]==="string"?s.receipts[m[0]]:""])),
     photo:typeof s.photo==="string"?s.photo:""
   }));
 }
