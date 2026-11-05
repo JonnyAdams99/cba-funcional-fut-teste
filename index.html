@@ -225,8 +225,12 @@ const $=id=>document.getElementById(id);
 function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
 function blankPerson(name=""){
   const payments={};
-  MONTHS.forEach(m=>payments[m[0]]="");
-  return{id:makeId(),name,payments,photo:""};
+  const receipts={};
+  MONTHS.forEach(m=>{
+    payments[m[0]]="";
+    receipts[m[0]]="";
+  });
+  return{id:makeId(),name,payments,receipts,photo:""}
 }
 function money(v){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(v)||0)}
 function parseMoney(v){
